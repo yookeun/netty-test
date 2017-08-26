@@ -1,3 +1,5 @@
+package server;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,22 +10,20 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * Created by yookeun on 2017. 8. 24..
+ * Created by yookeun on 2017. 8. 26..
  */
-public class DiscardServer {
+public class EchoServer {
     public static void main(String[] args) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline p = socketChannel.pipeline();
-                            p.addLast(new DisCardServerHandler());
+                            p.addLast(new EchoServerHandler());
                         }
                     });
             ChannelFuture f = b.bind(8888).sync();
@@ -34,4 +34,3 @@ public class DiscardServer {
         }
     }
 }
-
